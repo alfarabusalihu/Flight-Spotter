@@ -3,6 +3,7 @@ import Amadeus from "amadeus";
 const amadeus = new Amadeus({
     clientId: process.env.amadeus_api_key,
     clientSecret: process.env.amadeus_api_secret,
+    hostname: process.env.AMADEUS_ENVIRONMENT === 'production' ? 'production' : 'test'
 });
 
 export async function searchFlights(params: {

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Shield, Brain, Eye, Cpu, LucideIcon } from "lucide-react";
+import { Shield, Brain, Eye, LucideIcon } from "lucide-react";
 
 const FeatureCard = ({ icon: Icon, title, description, delay }: { icon: LucideIcon, title: string, description: string, delay: number }) => (
     <motion.div

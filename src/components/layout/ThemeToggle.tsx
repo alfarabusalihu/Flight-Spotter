@@ -8,12 +8,8 @@ export default function ThemeToggle() {
     const [theme, setTheme] = useState<"light" | "dark">("light");
 
     useEffect(() => {
-        const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null;
-        if (savedTheme) {
-            setTheme(savedTheme);
-            document.documentElement.classList.toggle("dark", savedTheme === "dark");
-            document.documentElement.setAttribute("data-theme", savedTheme);
-        } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        // Use system preference only - no localStorage
+        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
             setTheme("dark");
             document.documentElement.classList.add("dark");
             document.documentElement.setAttribute("data-theme", "dark");
@@ -23,7 +19,6 @@ export default function ThemeToggle() {
     const toggleTheme = () => {
         const newTheme = theme === "light" ? "dark" : "light";
         setTheme(newTheme);
-        localStorage.setItem("theme", newTheme);
         document.documentElement.classList.toggle("dark", newTheme === "dark");
         document.documentElement.setAttribute("data-theme", newTheme);
     };

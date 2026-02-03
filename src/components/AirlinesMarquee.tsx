@@ -1,12 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { getGlobalAirlinesAction } from "@/app/actions/localization";
 import { getAirlinesAction } from "@/app/actions/flight";
 
 export default function AirlinesMarquee() {
     const [airlines, setAirlines] = useState<{ name: string; code: string }[]>([]);
+    const [imgErrors, setImgErrors] = useState<Record<string, boolean>>({});
 
     useEffect(() => {
         const loadAirlines = async () => {
@@ -72,15 +74,20 @@ export default function AirlinesMarquee() {
                                 transition={{ duration: 0.2 }}
                             >
                                 {/* Square card with airline logo */}
-                                <div className="w-[120px] h-[120px] rounded-2xl bg-white dark:bg-white/95 backdrop-blur-md border border-slate-200 dark:border-white/10 shadow-lg hover:shadow-2xl hover:shadow-dark-cyan/10 transition-all duration-300 flex items-center justify-center p-6 group-hover/card:border-dark-cyan/30">
-                                    <img
-                                        src={`https://www.gstatic.com/flights/airline_logos/70px/${airline.code}.png`}
-                                        alt={airline.name}
-                                        className="w-full h-full object-contain group-hover/card:scale-110 transition-transform duration-300"
-                                        onError={(e) => {
-                                            (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${airline.name}&background=06B6D4&color=fff&bold=true&size=70`;
-                                        }}
-                                    />
+                                <div className="w-[120px] h-[120px] rounded-2xl bg-white dark:bg-white/95 backdrop-blur-md border border-slate-200 dark:border-white/10 shadow-lg hover:shadow-2xl hover:shadow-dark-cyan/10 transition-all duration-300 flex items-center justify-center p-6 group-hover/card:border-dark-cyan/30 overflow-hidden">
+                                    <div className="relative w-full h-full">
+                                        <Image
+                                            src={imgErrors[airline.code]
+                                                ? `https://ui-avatars.com/api/?name=${airline.name.replace(/\s+/g, '+')}&background=06B6D4&color=fff&bold=true&size=70`
+                                                : `https://www.gstatic.com/flights/airline_logos/70px/${airline.code}.png`
+                                            }
+                                            alt={airline.name}
+                                            fill
+                                            className="object-contain group-hover/card:scale-110 transition-transform duration-300"
+                                            unoptimized
+                                            onError={() => setImgErrors(prev => ({ ...prev, [airline.code]: true }))}
+                                        />
+                                    </div>
                                 </div>
 
                                 {/* Airline name below */}

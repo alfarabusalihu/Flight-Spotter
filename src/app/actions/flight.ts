@@ -9,6 +9,7 @@ if (!process.env.amadeus_api_secret) console.error("Missing amadeus_api_secret")
 const amadeus = new Amadeus({
     clientId: process.env.amadeus_api_key,
     clientSecret: process.env.amadeus_api_secret,
+    hostname: process.env.AMADEUS_ENVIRONMENT === 'production' ? 'production' : 'test'
 });
 
 export async function searchLocationsAction(keyword: string) {

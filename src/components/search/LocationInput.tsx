@@ -19,11 +19,12 @@ interface LocationInputProps {
     onClear: () => void;
     onSelect: (loc: SearchLocation) => void;
     onDetectLocation?: () => Promise<void>;
+    isAuthenticated?: boolean;
 }
 
 export default function LocationInput({
     type, value, iataCode, isFocused, isLoading, compact, locations,
-    onFocus, onChange, onClear, onSelect, onDetectLocation
+    onFocus, onChange, onClear, onSelect, onDetectLocation, isAuthenticated
 }: LocationInputProps) {
 
     // Helper for formatting location names
@@ -35,8 +36,10 @@ export default function LocationInput({
         <div className="flex-1 min-w-[220px] relative group">
             {/* Icon/Action */}
             <div
-                onClick={onDetectLocation}
-                className={`absolute left-3 top-1/2 -translate-y-1/2 text-foreground/40 hover:text-dark-cyan-light z-10 p-2 ${onDetectLocation ? 'cursor-pointer' : 'pointer-events-none'}`}
+                onClick={isAuthenticated && onDetectLocation ? onDetectLocation : undefined}
+                title={!isAuthenticated && type === 'origin' ? "Sign in to use location detection" : undefined}
+                className={`absolute left-3 top-1/2 -translate-y-1/2 text-foreground/40 hover:text-dark-cyan-light z-10 p-2 ${isAuthenticated && onDetectLocation ? 'cursor-pointer' : 'pointer-events-none opacity-30'
+                    }`}
             >
                 {isLoading && type === 'origin' ? (
                     <Loader2 className="w-4 h-4 animate-spin" />

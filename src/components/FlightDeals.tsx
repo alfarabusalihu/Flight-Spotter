@@ -10,8 +10,6 @@ export default function FlightDeals() {
         discoveryDeals,
         isDiscoveryLoading,
         updateSearchParam,
-        searchFlights,
-        originCode,
         formatPrice
     } = useFlightStore();
 

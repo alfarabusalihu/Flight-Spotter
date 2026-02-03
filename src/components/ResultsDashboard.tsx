@@ -36,7 +36,7 @@ export default function ResultsDashboard() {
         >
 
             {/* Results Grid - Featured Layout */}
-            <div className="w-full max-w-[1600px] mx-auto px-fluid py-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+            <div className="w-full max-w-[1600px] mx-auto px-fluid py-8 grid grid-cols-1 lg:grid-cols-[60%_40%] gap-8 items-start">
 
                 {/* Results List */}
                 <div className="space-y-6">
@@ -114,8 +114,8 @@ export default function ResultsDashboard() {
                 </div>
 
                 {/* Vertical Visualizer Column */}
-                <div className="w-full">
-                    <div className="sticky top-28 space-y-8">
+                <div className="w-full hidden lg:block h-full">
+                    <div className="sticky top-28 space-y-8 overflow-y-auto max-h-[calc(100vh-8rem)] pb-8 no-scrollbar">
                         <PriceGraph />
                         <TouristPlaces />
                     </div>

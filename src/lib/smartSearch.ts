@@ -56,7 +56,7 @@ class SmartSearchManager {
                     const results = await searchLocationsAction(code);
                     if (results && results.length > 0) {
                         // Add to location cache
-                        locationCache.addToCache(results[0]);
+                        locationCache.add([results[0] as any]);
                         console.log(`[SmartSearch] 📥 Cached predicted location: ${code}`);
                     }
                 }

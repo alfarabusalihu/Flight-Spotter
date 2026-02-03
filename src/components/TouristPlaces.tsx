@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import { MapPin, Star, Sparkles, Navigation } from "lucide-react";
 import { useFlightStore } from "@/lib/store";
 
@@ -38,13 +39,12 @@ export default function TouristPlaces() {
                 className="group relative bg-foreground/[0.03] dark:bg-white/[0.03] border border-foreground/10 dark:border-white/10 rounded-[2rem] overflow-hidden p-3 hover:bg-foreground/[0.05] dark:hover:bg-white/[0.05] transition-all duration-500"
             >
                 <div className="relative aspect-[16/10] overflow-hidden rounded-2xl mb-4">
-                    <img
+                    <Image
                         src={`https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80&sig=${poi.id || index}&q=${searchTerm}`}
                         alt={poi.name}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                        onError={(e) => {
-                            (e.target as HTMLImageElement).src = `https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80`;
-                        }}
+                        fill
+                        className="object-cover transition-transform duration-700 group-hover:scale-110"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                     {/* Shadow Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500" />

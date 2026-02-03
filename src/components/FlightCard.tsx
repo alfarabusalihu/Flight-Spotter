@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, PlaneTakeoff, Info } from "lucide-react";
+import Image from "next/image";
 import { useState } from "react";
 import { useFlightStore } from "@/lib/store";
 import { Button } from "@/components/ui/Button";
@@ -69,14 +70,16 @@ export default function FlightCard({ flight, index, isInspiration }: FlightCardP
                 <div className="flex flex-col items-center gap-2 shrink-0 md:min-w-[84px] w-full md:w-auto">
                     <div className="w-14 h-14 bg-white/50 dark:bg-white/5 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm overflow-hidden border border-silver/10">
                         {airlineCode !== "Discovery" ? (
-                            <img
-                                src={`https://www.gstatic.com/flights/airline_logos/70px/${airlineCode}.png`}
-                                alt={airlineName}
-                                className="w-10 h-10 object-contain brightness-110 contrast-125"
-                                onError={(e) => {
-                                    (e.target as HTMLImageElement).parentElement!.innerHTML = "✈️";
-                                }}
-                            />
+                            <div className="relative w-10 h-10">
+                                <Image
+                                    src={`https://www.gstatic.com/flights/airline_logos/70px/${airlineCode}.png`}
+                                    alt={airlineName}
+                                    width={40}
+                                    height={40}
+                                    className="object-contain brightness-110 contrast-125"
+                                    unoptimized // External branding logos don't always need optimization
+                                />
+                            </div>
                         ) : (
                             <span className="text-2xl">🌍</span>
                         )}
@@ -87,15 +90,12 @@ export default function FlightCard({ flight, index, isInspiration }: FlightCardP
                 <div className="flex-1 w-full grid grid-cols-2 md:grid-cols-3 gap-4 items-center">
                     <div className="flex flex-col">
                         <div className="flex items-center gap-2 mb-1">
-                            <span className="text-[10px] font-black text-dark-cyan uppercase tracking-widest">{airlineName}</span>
+                            <span className="px-2 py-0.5 rounded-md bg-dark-cyan/10 text-[10px] font-black text-dark-cyan uppercase tracking-widest">{airlineName}</span>
                         </div>
                         <span className="text-xl font-black text-foreground font-sans tracking-tighter">
                             {isSearchRes ? `${depTime} – ${arrTime}` : `To ${destinationName}`}
                         </span>
                         <div className="flex items-center gap-3 mt-1 underline-offset-4 decoration-dark-cyan-light/30">
-                            <span className="text-xs text-silver font-bold uppercase tracking-wider font-sans">
-                                {isInspiration && !isSearchRes ? `Economy` : "Economy Class"}
-                            </span>
                             <span className="md:hidden text-[10px] font-black text-amber-500 uppercase tracking-widest">
                                 • {stopsLabel}
                             </span>

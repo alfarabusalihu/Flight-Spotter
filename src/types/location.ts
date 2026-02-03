@@ -11,6 +11,11 @@ export interface CachedLocation {
     subType: string;
     popularity?: number;
     lastUsed?: number;
+    address?: {
+        cityName?: string;
+        countryName?: string;
+        countryCode?: string;
+    };
 }
 
 export interface SearchLocation {

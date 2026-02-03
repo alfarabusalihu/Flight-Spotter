@@ -1,14 +1,18 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Privacy Policy | Flight Spotter',
-    description: 'Read our strict privacy policy. We do not use local storage or trackers.',
+    title: 'Privacy Policy',
+    description: 'Flight Spotter privacy policy: Zero local storage, no tracking, ephemeral sessions. Learn how we protect your data.',
+    openGraph: {
+        title: 'Privacy Policy | Flight Spotter',
+        description: 'Zero local storage, no tracking. Your privacy is our priority.',
+    },
 };
 
 export default function PrivacyPage() {
     return (
         <div className="min-h-screen pt-32 pb-20 px-4 md:px-8 max-w-4xl mx-auto">
-            <div className="glass-card p-8 md:p-12 space-y-8">
+            <article className="glass-card p-8 md:p-12 space-y-8">
                 <h1 className="text-4xl font-display font-black text-foreground tracking-tighter">
                     Privacy <span className="text-dark-cyan-light">Policy</span>
                 </h1>
@@ -18,7 +22,7 @@ export default function PrivacyPage() {
                 <section className="space-y-4">
                     <h2 className="text-xl font-bold text-foreground">1. No Local Storage</h2>
                     <p className="text-foreground/70 leading-relaxed">
-                        We adhere to a strict <strong>No Local Storage</strong> policy. We do not save your search history, personal details, or preferences in your browser's Local Storage or Cookies. All session data is ephemeral and cleared when you close the tab.
+                        We adhere to a strict <strong>No Local Storage</strong> policy. We do not save your search history, personal details, or preferences in your browser&apos;s Local Storage or Cookies. All session data is ephemeral and cleared when you close the tab.
                     </p>
                 </section>
 
@@ -35,7 +39,7 @@ export default function PrivacyPage() {
                         We use Google Gemini for price predictions and Amadeus for flight inventory. Please refer to their respective privacy policies for how they handle transient data processing.
                     </p>
                 </section>
-            </div>
+            </article>
         </div>
     );
 }

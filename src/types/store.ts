@@ -53,6 +53,7 @@ export interface FlightStoreState {
     retrievedLocations: any[];
     searchError: ErrorType | null;
     errorMessage: string | null;
+    locationError: string | null;
 
     // Logic State
     sortBy: 'price' | 'duration' | 'best';
@@ -87,6 +88,7 @@ export interface FlightStoreActions {
     getPaginatedFlights: () => any[];
     setSearchError: (error: ErrorType | null, message?: string) => void;
     clearError: () => void;
+    clearLocationError: () => void;
     setViewMode: (mode: FlightStoreState['viewMode']) => void;
     processFlightResults: (results: any[], params: any) => Promise<void>;
 }

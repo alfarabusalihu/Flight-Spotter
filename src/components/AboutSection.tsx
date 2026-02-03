@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { Plane, ABOUT_STATS, MISSION_CONTENT } from "@/constants/landingData";
 
 export default function AboutSection() {
@@ -41,10 +42,13 @@ export default function AboutSection() {
 
                     <div className="relative h-[500px] w-full rounded-[3rem] overflow-hidden border border-white/20 shadow-2xl group">
                         <div className="absolute inset-0 bg-dark-cyan/10 group-hover:bg-dark-cyan/0 transition-colors duration-700 z-10" />
-                        <img
+                        <Image
                             src={image}
                             alt="Airplane wing view"
-                            className="absolute inset-0 w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-1000"
+                            fill
+                            className="object-cover scale-105 group-hover:scale-100 transition-transform duration-1000"
+                            sizes="(max-width: 1024px) 100vw, 50vw"
+                            priority
                         />
 
                         <motion.div

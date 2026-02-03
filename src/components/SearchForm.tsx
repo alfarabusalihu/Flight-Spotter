@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { searchLocationsAction } from "@/app/actions/flight";
 import { format } from "date-fns";
-import { MapPin, Calendar, Navigation } from "lucide-react";
+import { Calendar } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { useFlightStore } from "@/lib/store";
@@ -13,8 +13,10 @@ import SearchErrorDisplay from "./SearchErrorDisplay";
 import { smartSearch } from "@/lib/smartSearch";
 import { Skeleton } from "@/components/ui/Skeleton";
 import LocationInput from "./search/LocationInput";
-import { type SearchLocation } from "@/types/location";
+import { type SearchLocation, type CachedLocation } from "@/types/location";
 import SearchLoadingBar from "./search/SearchLoadingBar";
+import LocationPermissionDialog from "./LocationPermissionDialog";
+import { useAuth } from "@/lib/firebase";
 
 interface SearchFormProps {
     compact?: boolean;
@@ -25,13 +27,15 @@ export default function SearchForm({ compact }: SearchFormProps) {
         origin, originCode, destination, destinationCode, departureDate, returnDate,
         searchFlights, isSearchLoading, updateSearchParam, retrievedLocations,
         setRetrievedLocations, detectUserLocation, searchError, clearError,
-        fetchDiscoveryDeals, fetchOriginInsights
+        fetchDiscoveryDeals, fetchOriginInsights, locationError, clearLocationError
     } = useFlightStore();
 
+    const { isAuthenticated } = useAuth();
     const [isMounted, setIsMounted] = useState(false);
     const [detectingLocation, setDetectingLocation] = useState(false);
     const [activeCalendar, setActiveCalendar] = useState<'departure' | 'return' | null>(null);
     const [focusedField, setFocusedField] = useState<'origin' | 'destination' | null>(null);
+    const [showPermissionDialog, setShowPermissionDialog] = useState(false);
 
     const calendarRef = useRef<HTMLDivElement>(null);
     const returnCalendarRef = useRef<HTMLDivElement>(null);
@@ -42,6 +46,14 @@ export default function SearchForm({ compact }: SearchFormProps) {
     useEffect(() => {
         setIsMounted(true);
     }, []);
+
+    // Location Error Toast Logic
+    useEffect(() => {
+        if (locationError) {
+            const timer = setTimeout(() => clearLocationError(), 5000);
+            return () => clearTimeout(timer);
+        }
+    }, [locationError, clearLocationError]);
 
     // Close overlays on outside click
     useEffect(() => {
@@ -83,7 +95,7 @@ export default function SearchForm({ compact }: SearchFormProps) {
                 try {
                     const apiResults = await searchLocationsAction(val);
                     if (apiResults && apiResults.length > 0) {
-                        apiResults.forEach((loc: SearchLocation) => locationCache.addToCache(loc));
+                        apiResults.forEach((loc: SearchLocation) => locationCache.add([loc as CachedLocation]));
                         const apiCodes = new Set(apiResults.map((r: any) => r.iataCode));
                         const merged = [...apiResults, ...cachedResults.filter(c => !apiCodes.has(c.iataCode))];
                         setRetrievedLocations(merged);
@@ -110,7 +122,7 @@ export default function SearchForm({ compact }: SearchFormProps) {
             fetchOriginInsights(displayName, loc.iataCode);
         }
 
-        locationCache.addToRecent({
+        locationCache.addRecent({
             id: loc.id, iataCode: loc.iataCode, name: loc.name, subType: loc.subType,
             cityName: loc.address?.cityName || '', countryCode: loc.address?.countryCode || ''
         });
@@ -171,11 +183,10 @@ export default function SearchForm({ compact }: SearchFormProps) {
                             onChange={(val) => handleLocationSearch(val, 'origin')}
                             onClear={() => { updateSearchParam('origin', ''); updateSearchParam('originCode', ''); }}
                             onSelect={(loc) => handleSelect(loc, 'origin')}
-                            onDetectLocation={async () => {
-                                setDetectingLocation(true);
-                                await detectUserLocation();
-                                setDetectingLocation(false);
-                            }}
+                            isAuthenticated={isAuthenticated}
+                            onDetectLocation={isAuthenticated ? async () => {
+                                setShowPermissionDialog(true);
+                            } : undefined}
                         />
                     </div>
 
@@ -309,6 +320,32 @@ export default function SearchForm({ compact }: SearchFormProps) {
                     )}
                 </AnimatePresence>
             </div>
+
+            {/* Location Permission Dialog */}
+            <LocationPermissionDialog
+                isOpen={showPermissionDialog}
+                onClose={() => setShowPermissionDialog(false)}
+                onAllow={async () => {
+                    setShowPermissionDialog(false);
+                    setDetectingLocation(true);
+                    await detectUserLocation();
+                    setDetectingLocation(false);
+                }}
+            />
+
+            {/* Error Toast */}
+            <AnimatePresence>
+                {locationError && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 20 }}
+                        className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[100] px-6 py-3 bg-red-500 text-white rounded-full shadow-xl font-bold text-xs"
+                    >
+                        {locationError}
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </motion.div>
     );
 }

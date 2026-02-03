@@ -2,8 +2,9 @@
 
 import { useFlightStore } from "@/lib/store";
 import SearchForm from "./SearchForm";
-import { Filter, ChevronDown, X, Plane, Briefcase } from "lucide-react";
+import { Filter, X, Plane, Briefcase } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import { useState } from "react";
 import FilterDropdown from "./search/FilterDropdown";
 import PriceRangeSelector from "./search/PriceRangeSelector";
@@ -144,12 +145,15 @@ export default function SearchFiltersBar() {
                             }}
                             renderOption={(option: any, isSelected: boolean) => (
                                 <div className="flex items-center gap-3 w-full">
-                                    <img
-                                        src={`https://www.gstatic.com/flights/airline_logos/70px/${option.id}.png`}
-                                        alt={option.label}
-                                        className="w-4 h-4 object-contain brightness-110"
-                                        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                                    />
+                                    <div className="relative w-4 h-4">
+                                        <Image
+                                            src={`https://www.gstatic.com/flights/airline_logos/70px/${option.id}.png`}
+                                            alt={option.label}
+                                            fill
+                                            className="object-contain brightness-110"
+                                            unoptimized
+                                        />
+                                    </div>
                                     <span className={`text-xs font-bold transition-colors ${isSelected ? 'text-dark-cyan' : 'text-foreground'}`}>
                                         {option.label}
                                     </span>

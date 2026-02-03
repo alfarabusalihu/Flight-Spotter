@@ -33,12 +33,12 @@ export default function Hero() {
             </motion.div>
 
             {/* Branding Content */}
-            <div className="relative z-20 flex flex-col items-center justify-center h-full px-4 text-center">
+            <div className="relative z-20 flex flex-col items-center justify-center h-full px-4 text-center gap-8 md:gap-12">
                 <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                    className="relative w-full max-w-[1600px] flex flex-col items-center"
+                    className="relative w-full max-w-[1600px] flex flex-col items-center gap-6 md:gap-8"
                 >
                     <div className="relative inline-block">
                         {/* Animated Plane SVG - Decoupled from centering */}
@@ -72,7 +72,7 @@ export default function Hero() {
                         </motion.h1>
                     </div>
 
-                    <p className="text-lg md:text-2xl text-foreground/60 font-medium mt-12 tracking-wide max-w-2xl text-center">
+                    <p className="text-lg md:text-2xl text-foreground/60 font-medium tracking-wide max-w-2xl text-center">
                         {description}
                     </p>
                 </motion.div>
@@ -86,7 +86,7 @@ export default function Hero() {
                     onClick={handleSearchClick}
                     className="group relative px-12 py-5 bg-dark-cyan hover:bg-dark-cyan-light text-white font-bold rounded-2xl shadow-2xl shadow-dark-cyan/30 hover:shadow-dark-cyan-light/40 transition-all duration-300 hover:scale-105 flex items-center gap-3 text-lg"
                 >
-                    Search Flights
+                    Search
                     <Plane className="w-6 h-6 group-hover:rotate-12 transition-transform" />
                     <div className="absolute inset-0 rounded-2xl bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity blur-xl" />
                 </motion.button>
