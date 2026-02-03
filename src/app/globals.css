@@ -1,0 +1,226 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-main);
+  --font-display: var(--font-heading);
+
+  /* Custom Palette for Vibe */
+  --color-dark-cyan: #052a3a;
+  --color-dark-cyan-light: #0d9488;
+  --color-sand: #fef3c7;
+  --color-sand-deep: #f59e0b;
+  --color-silver: #64748b;
+  --color-silver-light: #f8fafc;
+}
+
+:root {
+  /* Day Theme (Light Cyan Vibe) */
+  --background: #f0fdfa;
+  /* A very light cyan (Teal-50) */
+  --foreground: #020617;
+  /* Slate-950 for high contrast black */
+  --font-main: var(--font-inter), sans-serif;
+  --font-heading: var(--font-outfit), sans-serif;
+  --accent: #0d9488;
+
+  /* Hero Scene Variables */
+  --hero-sky-top: #38bdf8;
+  --hero-sky-bottom: #bae6fd;
+  --hero-sand-light: #fef3c7;
+  --hero-sand-dark: #fde68a;
+  --hero-road: #64748b;
+  --hero-truck: #dc2626;
+  --hero-tree: #059669;
+  --hero-headlight: transparent;
+
+  /* Decorative Variables */
+  --radius-ui: 2.5rem;
+  --font-weight-variable: 500;
+  --gap-fluid: clamp(1rem, 0.5rem + 2vw, 3rem);
+  --padding-fluid: clamp(1rem, 0.5rem + 3vw, 4rem);
+}
+
+/* Dark Theme (Midnight Flight) */
+.dark,
+[data-theme='dark'] {
+  --background: #020617;
+  /* Reverted to original Slate 950 as requested */
+  /* Teal-950 equivalent for deep cyan dark mode */
+  --foreground: #ffffff;
+  /* Pure white for max contrast */
+  --font-main: var(--font-inter), sans-serif;
+  --font-heading: var(--font-outfit), sans-serif;
+  --accent: #2dd4bf;
+
+  /* Hero Scene Variables (Night) */
+  --hero-sky-top: #020617;
+  --hero-sky-bottom: #0f172a;
+  --hero-sand-light: #052a3a;
+  --hero-sand-dark: #083344;
+  --hero-road: #1e293b;
+  --hero-truck: #450a0a;
+  --hero-tree: #064e3b;
+  --hero-headlight: rgba(253, 224, 71, 0.4);
+
+  /* Override Custom Palette for Dark Mode Contrast */
+  --color-dark-cyan: #bae6fd;
+  /* Light Sky Blue (was dark navy) - ensures text visibility */
+  --color-dark-cyan-light: #2dd4bf;
+  /* Bright Teal (was medium teal) - boosts active link visibility */
+
+  /* Thematic Variables */
+  --radius-ui: 1.25rem;
+  --font-weight-variable: 700;
+}
+
+/* Alignment & Visibility Fixes */
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-main);
+  transition: background-color 0.8s ease, color 0.5s ease;
+
+  /* UX & Security Requirements */
+  user-select: none;
+  /* Prevent text selection/copying */
+  -webkit-user-select: none;
+}
+
+/* Force pointer cursor on all interactive elements */
+button,
+a,
+select,
+label,
+[role="button"],
+input[type="checkbox"],
+input[type="radio"],
+input[type="submit"],
+.clickable {
+  cursor: pointer !important;
+}
+
+/* Allow text selection in editable fields */
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="password"],
+input[type="search"],
+input[type="date"],
+textarea {
+  user-select: text;
+  -webkit-user-select: text;
+  cursor: text;
+}
+
+/* Glassmorphism Refined */
+@utility glass {
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border-width: 1px;
+  transition: all 0.5s ease;
+  background: rgba(255, 255, 255, 0.5);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.dark .glass,
+[data-theme='dark'] .glass {
+  background: rgba(15, 23, 42, 0.6);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+@utility glass-card {
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border-width: 1px;
+  transition: all 0.5s ease;
+  background: rgba(255, 255, 255, 0.5);
+  border-color: rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-ui);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+  /* Softened shadow */
+}
+
+.dark .glass-card,
+[data-theme='dark'] .glass-card {
+  background: rgba(15, 23, 42, 0.6);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+}
+
+@utility glass-dark {
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  background: rgba(0, 0, 0, 0.6);
+  border-width: 1px;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Keyframes for Stars */
+@keyframes flicker {
+
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+.star {
+  position: absolute;
+  border-radius: 9999px;
+  background-color: white;
+  opacity: 0;
+  animation: flicker var(--dur) infinite ease-in-out;
+  animation-delay: var(--delay);
+}
+
+/* Typography Consistency */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading), sans-serif;
+  letter-spacing: -0.02em;
+}
+
+
+/* Fluid Scaling Utilities */
+.gap-fluid {
+  gap: var(--gap-fluid);
+}
+
+.px-fluid {
+  padding-left: var(--padding-fluid);
+  padding-right: var(--padding-fluid);
+}
+
+.py-fluid {
+  padding-top: var(--padding-fluid);
+  padding-bottom: var(--padding-fluid);
+}
+
+.font-dynamic {
+  font-weight: var(--font-weight-variable);
+}

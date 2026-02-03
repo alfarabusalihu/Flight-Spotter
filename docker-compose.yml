@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: flight-spotter-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      # Add other environment variables here, e.g. for Firebase or Gemini
+      # - GEMINI_API_KEY=${GEMINI_API_KEY}
+    networks:
+      - flight-net
+
+networks:
+  flight-net:
+    driver: bridge
