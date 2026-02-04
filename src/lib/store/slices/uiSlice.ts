@@ -11,6 +11,8 @@ export interface UISlice {
     setViewMode: (mode: 'landing' | 'searching' | 'results') => void;
     setSearchError: (error: any, message?: string) => void;
     clearError: () => void;
+    screenSize: 'sm' | 'md' | 'lg' | 'xl';
+    setScreenSize: (size: 'sm' | 'md' | 'lg' | 'xl') => void;
 }
 
 export const createUISlice: StateCreator<FlightStore, [], [], UISlice> = (set) => ({
@@ -24,4 +26,8 @@ export const createUISlice: StateCreator<FlightStore, [], [], UISlice> = (set) =
     setViewMode: (mode) => set({ viewMode: mode }),
     setSearchError: (error, message) => set({ searchError: error, errorMessage: message || null }),
     clearError: () => set({ searchError: null, errorMessage: null }),
+
+    // Responsive State
+    screenSize: 'lg', // Default to desktop for SSR cleanliness, client will update
+    setScreenSize: (size: 'sm' | 'md' | 'lg' | 'xl') => set({ screenSize: size }),
 });

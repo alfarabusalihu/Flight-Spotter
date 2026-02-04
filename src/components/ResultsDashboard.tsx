@@ -1,13 +1,12 @@
-"use client";
-
-import { motion } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import SearchFiltersBar from "./SearchFiltersBar";
+// ... imports
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronLeft, ChevronRight, BarChart2, List } from "lucide-react";
 import FlightResults from "./FlightResults";
 import PriceGraph from "./PriceGraph";
 import TouristPlaces from "./TouristPlaces";
 import { useFlightStore } from "@/lib/store";
 import { Button } from "@/components/ui/Button";
+import { useState } from "react";
 
 export default function ResultsDashboard() {
     const {
@@ -15,8 +14,11 @@ export default function ResultsDashboard() {
         isSearchLoading,
         pagination,
         getPaginatedFlights,
-        updatePagination
+        updatePagination,
+        screenSize // Assuming added to store
     } = useFlightStore();
+
+    const [mobileView, setMobileView] = useState<'flights' | 'insights'>('flights');
 
     const paginatedResults = getPaginatedFlights ? getPaginatedFlights() : flightResults.slice(0, 10);
     const totalPages = Math.ceil(flightResults.length / pagination.itemsPerPage);
@@ -24,6 +26,11 @@ export default function ResultsDashboard() {
     if (flightResults.length === 0) {
         return null;
     }
+
+    // Toggle function for mobile
+    const toggleMobileView = () => {
+        setMobileView(prev => prev === 'flights' ? 'insights' : 'flights');
+    };
 
     return (
         <motion.div
@@ -34,92 +41,108 @@ export default function ResultsDashboard() {
             transition={{ duration: 0.5 }}
             className="w-full min-h-screen pt-8"
         >
-
-            {/* Results Grid - Featured Layout */}
-            <div className="w-full max-w-[1600px] mx-auto px-fluid py-8 grid grid-cols-1 lg:grid-cols-[60%_40%] gap-8 items-start">
-
-                {/* Results List */}
-                <div className="space-y-6">
-                    <FlightResults
-                        results={paginatedResults}
-                        isLoading={isSearchLoading}
+            {/* Mobile View Toggle (Visible only on lg and below) */}
+            <div className="lg:hidden w-full px-fluid mb-6">
+                <div className="flex bg-background/50 backdrop-blur-sm p-1 rounded-full border border-silver/10 relative">
+                    {/* Sliding Background Pill */}
+                    <motion.div
+                        className="absolute top-1 bottom-1 bg-dark-cyan rounded-full shadow-sm z-0"
+                        initial={false}
+                        animate={{
+                            left: mobileView === 'flights' ? '4px' : '50%',
+                            width: 'calc(50% - 4px)'
+                        }}
+                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
                     />
 
-                    {/* EEAT Trust Marker */}
-                    {!isSearchLoading && (
-                        <div className="flex items-center gap-2 p-4 bg-dark-cyan/5 rounded-[2rem] border border-dark-cyan/10">
-                            <div className="w-8 h-8 rounded-full bg-dark-cyan/10 flex items-center justify-center">
-                                <span className="text-xs">✨</span>
-                            </div>
-                            <p className="text-[10px] font-bold text-foreground/60 uppercase tracking-widest">
-                                AI-Powered Insights • Verified by Amadeus Global Data Hub
-                            </p>
-                        </div>
-                    )}
-
-                    {/* Enhanced Pagination Controls */}
-                    {!isSearchLoading && totalPages > 1 && (
-                        <div className="flex flex-col items-center gap-4 mt-8 py-8 border-t border-silver/10">
-                            <div className="flex items-center gap-1">
-                                <Button
-                                    onClick={() => updatePagination(Math.max(1, pagination.currentPage - 1))}
-                                    disabled={pagination.currentPage === 1}
-                                    variant="ghost"
-                                    size="icon"
-                                    className="bg-dark-cyan/5 text-foreground hover:bg-dark-cyan/10 rounded-xl"
-                                >
-                                    <ChevronLeft className="w-5 h-5" />
-                                </Button>
-
-                                {Array.from({ length: totalPages }, (_, i) => i + 1)
-                                    .filter(page => {
-                                        const cur = pagination.currentPage;
-                                        return page === 1 || page === totalPages || (page >= cur - 1 && page <= cur + 1);
-                                    })
-                                    .map((page, i, arr) => {
-                                        const showEllipsis = i > 0 && page - arr[i - 1] > 1;
-                                        return (
-                                            <div key={page} className="flex items-center">
-                                                {showEllipsis && <span className="px-2 text-silver text-xs">...</span>}
-                                                <Button
-                                                    onClick={() => updatePagination(page)}
-                                                    variant={pagination.currentPage === page ? "default" : "ghost"}
-                                                    size="icon"
-                                                    className={`rounded-xl font-bold text-sm ${pagination.currentPage === page
-                                                        ? 'bg-dark-cyan text-white shadow-lg shadow-dark-cyan/20 hover:bg-dark-cyan'
-                                                        : 'bg-transparent text-silver hover:bg-dark-cyan/5 hover:text-dark-cyan'
-                                                        }`}
-                                                >
-                                                    {page}
-                                                </Button>
-                                            </div>
-                                        );
-                                    })}
-
-                                <Button
-                                    onClick={() => updatePagination(Math.min(totalPages, pagination.currentPage + 1))}
-                                    disabled={pagination.currentPage === totalPages}
-                                    variant="ghost"
-                                    size="icon"
-                                    className="bg-dark-cyan/5 text-foreground hover:bg-dark-cyan/10 rounded-xl"
-                                >
-                                    <ChevronRight className="w-5 h-5" />
-                                </Button>
-                            </div>
-                            <p className="text-[10px] text-silver font-bold uppercase tracking-widest">
-                                Showing {(pagination.currentPage - 1) * pagination.itemsPerPage + 1} - {Math.min(pagination.currentPage * pagination.itemsPerPage, flightResults.length)} of {flightResults.length} flights
-                            </p>
-                        </div>
-                    )}
+                    <button
+                        onClick={() => setMobileView('flights')}
+                        className={`flex-1 relative z-10 flex items-center justify-center gap-2 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-colors ${mobileView === 'flights' ? 'text-white' : 'text-foreground/60'}`}
+                    >
+                        <List className="w-4 h-4" />
+                        Flights
+                    </button>
+                    <button
+                        onClick={() => setMobileView('insights')}
+                        className={`flex-1 relative z-10 flex items-center justify-center gap-2 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-colors ${mobileView === 'insights' ? 'text-white' : 'text-foreground/60'}`}
+                    >
+                        <BarChart2 className="w-4 h-4" />
+                        Insights
+                    </button>
                 </div>
+            </div>
 
-                {/* Vertical Visualizer Column */}
-                <div className="w-full hidden lg:block h-full">
-                    <div className="sticky top-28 space-y-8 overflow-y-auto max-h-[calc(100vh-8rem)] pb-8 no-scrollbar">
-                        <PriceGraph />
-                        <TouristPlaces />
+            {/* Results Grid - Featured Layout */}
+            <div className="w-full max-w-[1600px] mx-auto px-fluid py-8 relative overflow-hidden">
+
+                {/* Mobile Sliding Container */}
+                <motion.div
+                    className="flex w-[200%] lg:w-full lg:grid lg:grid-cols-[60%_40%] lg:gap-8 items-start"
+                    animate={{ x: screenSize !== 'lg' && screenSize !== 'xl' ? (mobileView === 'flights' ? '0%' : '-100%') : '0%' }}
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                >
+
+                    {/* Left Column: Flight Results */}
+                    <div className="w-[50%] lg:w-full space-y-6 px-1 lg:px-0">
+                        <FlightResults
+                            results={paginatedResults}
+                            isLoading={isSearchLoading}
+                        />
+
+                        {/* EEAT Trust Marker */}
+                        {!isSearchLoading && (
+                            <div className="flex items-center gap-2 p-4 bg-dark-cyan/5 rounded-[2rem] border border-dark-cyan/10">
+                                <div className="w-8 h-8 rounded-full bg-dark-cyan/10 flex items-center justify-center">
+                                    <span className="text-xs">✨</span>
+                                </div>
+                                <p className="text-[10px] font-bold text-foreground/60 uppercase tracking-widest">
+                                    AI-Powered Insights • Verified by Amadeus Global Data Hub
+                                </p>
+                            </div>
+                        )}
+
+                        {/* Pagination */}
+                        {!isSearchLoading && totalPages > 1 && (
+                            <div className="flex flex-col items-center gap-4 mt-8 py-8 border-t border-silver/10">
+                                <div className="flex items-center gap-1">
+                                    <Button
+                                        onClick={() => updatePagination(Math.max(1, pagination.currentPage - 1))}
+                                        disabled={pagination.currentPage === 1}
+                                        variant="ghost"
+                                        size="icon"
+                                        className="bg-dark-cyan/5 text-foreground hover:bg-dark-cyan/10 rounded-xl"
+                                    >
+                                        <ChevronLeft className="w-5 h-5" />
+                                    </Button>
+
+                                    {/* Simplified Pagination for Mobile */}
+                                    <span className="text-sm font-bold mx-4">
+                                        Page {pagination.currentPage} of {totalPages}
+                                    </span>
+
+                                    <Button
+                                        onClick={() => updatePagination(Math.min(totalPages, pagination.currentPage + 1))}
+                                        disabled={pagination.currentPage === totalPages}
+                                        variant="ghost"
+                                        size="icon"
+                                        className="bg-dark-cyan/5 text-foreground hover:bg-dark-cyan/10 rounded-xl"
+                                    >
+                                        <ChevronRight className="w-5 h-5" />
+                                    </Button>
+                                </div>
+                            </div>
+                        )}
                     </div>
-                </div>
+
+                    {/* Right Column: Insights (Graph/Places) */}
+                    <div className="w-[50%] lg:w-full lg:block h-full px-1 lg:px-0">
+                        <div className="lg:sticky lg:top-28 space-y-8 overflow-y-auto max-h-[calc(100vh-8rem)] pb-8 no-scrollbar">
+                            <PriceGraph />
+                            <TouristPlaces />
+                        </div>
+                    </div>
+
+                </motion.div>
             </div>
         </motion.div>
     );

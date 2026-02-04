@@ -50,7 +50,7 @@ export default function Header({ onLogoClick }: HeaderProps) {
                     </motion.div>
                     <motion.span
                         layoutId="nav-logo-text"
-                        className="text-xl font-display font-black text-foreground tracking-tighter group-hover:text-dark-cyan-light transition-colors"
+                        className="text-lg md:text-xl font-display font-black text-foreground tracking-tighter group-hover:text-dark-cyan-light transition-colors"
                     >
                         Flight Spotter
                     </motion.span>
@@ -79,8 +79,10 @@ export default function Header({ onLogoClick }: HeaderProps) {
                 </nav>
 
                 <div className="flex items-center gap-4">
-                    <ThemeToggle />
-                    <Auth />
+                    <div className="hidden md:flex items-center gap-4">
+                        <ThemeToggle />
+                        <Auth />
+                    </div>
                     {/* Mobile Menu Toggle */}
                     <button
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -103,15 +105,24 @@ export default function Header({ onLogoClick }: HeaderProps) {
                         <div className="p-6 flex flex-col gap-6">
                             <button
                                 onClick={handleHomeClick}
-                                className={`text-lg font-black uppercase tracking-widest text-left ${isActive('/') ? 'text-dark-cyan-light' : 'text-foreground'}`}
+                                className={`text-base font-black uppercase tracking-widest text-left ${isActive('/') ? 'text-dark-cyan-light' : 'text-foreground'}`}
                             >
                                 Home
                             </button>
                             <Link href="/flights" onClick={() => setIsMenuOpen(false)}>
-                                <span className={`text-lg font-black uppercase tracking-widest ${isActive('/flights') ? 'text-dark-cyan-light' : 'text-foreground'}`}>
+                                <span className={`text-base font-black uppercase tracking-widest ${isActive('/flights') ? 'text-dark-cyan-light' : 'text-foreground'}`}>
                                     Search Flights
                                 </span>
                             </Link>
+
+                            {/* Mobile Actions */}
+                            <div className="flex items-center justify-between pt-6 border-t border-silver/10">
+                                <span className="text-xs font-bold text-foreground/50 uppercase tracking-widest">Account & Theme</span>
+                                <div className="flex items-center gap-4">
+                                    <ThemeToggle />
+                                    <Auth />
+                                </div>
+                            </div>
                         </div>
                     </motion.div>
                 )}

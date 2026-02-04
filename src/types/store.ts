@@ -43,6 +43,7 @@ export interface FlightStoreState {
     exchangeRates: Record<string, number>;
     translations: Record<string, string>;
     viewMode: 'landing' | 'searching' | 'results';
+    screenSize: 'sm' | 'md' | 'lg' | 'xl';
 
     // UI & Loading
     isDiscoveryLoading: boolean;
@@ -90,6 +91,7 @@ export interface FlightStoreActions {
     clearError: () => void;
     clearLocationError: () => void;
     setViewMode: (mode: FlightStoreState['viewMode']) => void;
+    setScreenSize: (size: 'sm' | 'md' | 'lg' | 'xl') => void;
     processFlightResults: (results: any[], params: any) => Promise<void>;
 }
 

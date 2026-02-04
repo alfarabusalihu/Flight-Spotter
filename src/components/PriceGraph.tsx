@@ -9,6 +9,17 @@ import { TrendingUp, BarChart2, Info, ChevronRight } from "lucide-react";
 // --- D3 Area Chart (Forecast) ---
 function D3AreaChart({ data, currency, activeMinPrice, departureDate }: { data: any[], currency: string, activeMinPrice: number, departureDate?: string }) {
     const svgRef = useRef<SVGSVGElement>(null);
+    const [rerender, setRerender] = useState(0);
+
+    // Re-draw on resize using ResizeObserver
+    useEffect(() => {
+        if (!svgRef.current) return;
+        const resizeObserver = new ResizeObserver(() => {
+            setRerender(prev => prev + 1);
+        });
+        resizeObserver.observe(svgRef.current.parentElement!);
+        return () => resizeObserver.disconnect();
+    }, []);
 
     useEffect(() => {
         if (!svgRef.current || data.length === 0) return;
@@ -19,6 +30,8 @@ function D3AreaChart({ data, currency, activeMinPrice, departureDate }: { data: 
         const width = svgRef.current.clientWidth;
         const height = svgRef.current.clientHeight;
         const margin = { top: 20, right: 20, bottom: 30, left: 40 };
+
+        if (width <= margin.left + margin.right || height <= margin.top + margin.bottom) return;
 
         const x = d3.scaleTime()
             .domain(d3.extent(data, d => new Date(d.date)) as [Date, Date])
@@ -140,7 +153,7 @@ function D3AreaChart({ data, currency, activeMinPrice, departureDate }: { data: 
             .call(g => g.select(".domain").remove())
             .call(g => g.selectAll(".tick line").remove());
 
-    }, [data, currency, activeMinPrice, departureDate]);
+    }, [data, currency, activeMinPrice, departureDate, rerender]);
 
     return <svg ref={svgRef} className="w-full h-full" />;
 }
@@ -148,6 +161,17 @@ function D3AreaChart({ data, currency, activeMinPrice, departureDate }: { data: 
 // --- D3 Bar Chart (Market) ---
 function D3BarChart({ data }: { data: any[] }) {
     const svgRef = useRef<SVGSVGElement>(null);
+    const [rerender, setRerender] = useState(0);
+
+    // Re-draw on resize using ResizeObserver
+    useEffect(() => {
+        if (!svgRef.current) return;
+        const resizeObserver = new ResizeObserver(() => {
+            setRerender(prev => prev + 1);
+        });
+        resizeObserver.observe(svgRef.current.parentElement!);
+        return () => resizeObserver.disconnect();
+    }, []);
 
     useEffect(() => {
         if (!svgRef.current || data.length === 0) return;
@@ -158,6 +182,8 @@ function D3BarChart({ data }: { data: any[] }) {
         const width = svgRef.current.clientWidth;
         const height = svgRef.current.clientHeight;
         const margin = { top: 20, right: 10, bottom: 30, left: 10 };
+
+        if (width <= margin.left + margin.right || height <= margin.top + margin.bottom) return;
 
         const x = d3.scaleBand()
             .domain(data.map(d => d.bin))
@@ -177,7 +203,7 @@ function D3BarChart({ data }: { data: any[] }) {
             .attr("x", d => x(d.bin) as number)
             .attr("y", d => y(d.count))
             .attr("width", x.bandwidth())
-            .attr("height", d => height - margin.bottom - y(d.count))
+            .attr("height", d => Math.max(0, height - margin.bottom - y(d.count)))
             .attr("fill", (d, i) => i === 0 ? "#0d9488" : "rgba(13, 148, 136, 0.2)")
             .attr("rx", 6);
 
@@ -192,7 +218,7 @@ function D3BarChart({ data }: { data: any[] }) {
             .call(g => g.select(".domain").remove())
             .call(g => g.selectAll(".tick line").remove());
 
-    }, [data]);
+    }, [data, rerender]);
 
     return <svg ref={svgRef} className="w-full h-full" />;
 }
@@ -271,7 +297,7 @@ export default function PriceGraph() {
             </div>
 
             {/* Main Chart Area */}
-            <div className="h-64 w-full relative">
+            <div className="h-48 md:h-64 w-full relative">
                 <AnimatePresence mode="wait">
                     {view === 'forecast' ? (
                         forecastData.length > 0 ? (

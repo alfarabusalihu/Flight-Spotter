@@ -1,4 +1,19 @@
-<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M17.8 19.2L16 11L19.5 8.5C20.3 7.9 20.3 6.7 19.5 6.1L18.5 5.4C17.7 4.8 16.5 4.8 15.7 5.4L13.2 8.9L5 7.1C4.1 6.9 3.2 7.5 3.1 8.4C3 9.3 3.6 10.2 4.5 10.4L11.7 12L7.2 16.5C6.9 16.8 6.8 17.2 6.9 17.6L7.4 20.1C7.5 20.6 8.1 20.8 8.6 20.6L11.1 19.5C11.5 19.3 12 19.3 12.3 19.6L14.8 21.1C15.3 21.4 15.9 21.2 16 20.7L16.5 18.2C16.6 17.8 16.8 17.5 17.1 17.2L17.8 19.2Z" fill="#0d9488"/>
-  <circle cx="12" cy="12" r="10" stroke="#0d9488" stroke-width="1.5" stroke-dasharray="4 2"/>
+<svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M98.5 160L100 190L101.5 160Z" fill="black" fill-opacity="0.2" />
+  <path d="M100 20C95 20 90 25 90 40V140C90 155 95 160 100 160C105 160 110 155 110 140V40C110 25 105 20 100 20Z" fill="#0d9488" />
+  
+  <path d="M100 60L20 100V120L100 90L180 120V100L100 60Z" fill="#0f766e" />
+  <path d="M100 140L70 160V170L100 155L130 170V160L100 140Z" fill="#0f766e" />
+  <path d="M96 35H104V40H96V35Z" fill="#38bdf8" />
+  
+  <!-- Red Neon Circles (Static) -->
+  <circle cx="35" cy="112" r="2" fill="#ef4444" />
+  <circle cx="55" cy="107" r="2" fill="#ef4444" />
+  <circle cx="75" cy="102" r="2" fill="#ef4444" />
+
+  <circle cx="165" cy="112" r="2" fill="#ef4444" />
+  <circle cx="145" cy="107" r="2" fill="#ef4444" />
+  <circle cx="125" cy="102" r="2" fill="#ef4444" />
+
+  <circle cx="100" cy="170" r="3" fill="white" />
 </svg>

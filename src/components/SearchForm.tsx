@@ -249,6 +249,7 @@ export default function SearchForm({ compact }: SearchFormProps) {
                             {activeCalendar === 'return' && (
                                 <PremiumCalendar
                                     selectedDate={returnDate}
+                                    minDate={departureDate} // Enforce return date after departure
                                     onSelect={(date) => {
                                         updateSearchParam('returnDate', date);
                                         setActiveCalendar(null);
@@ -285,8 +286,8 @@ export default function SearchForm({ compact }: SearchFormProps) {
                 </AnimatePresence>
             </div>
 
-            {/* Error Display Area */}
-            <div className="relative">
+            {/* Error Display Area - Moved below and ensured z-index does not overlap inputs */}
+            <div className="relative z-10 mt-4 px-2">
                 <AnimatePresence mode="wait">
                     {searchError && (
                         <motion.div

@@ -3,6 +3,7 @@ import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import ScreenSizeListener from "@/components/utils/ScreenSizeListener";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -86,6 +87,7 @@ export default function RootLayout({
       <body
         className="antialiased min-h-screen relative bg-background text-foreground transition-colors duration-1000"
       >
+        <ScreenSizeListener />
         <Header />
         <main className="relative z-0 flex-1">
           {children}

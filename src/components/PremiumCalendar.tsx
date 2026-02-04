@@ -9,12 +9,18 @@ interface PremiumCalendarProps {
     selectedDate: string;
     onSelect: (date: string) => void;
     onClose: () => void;
+    minDate?: string;
 }
 
-export default function PremiumCalendar({ selectedDate, onSelect, onClose }: PremiumCalendarProps) {
+export default function PremiumCalendar({ selectedDate, onSelect, onClose, minDate }: PremiumCalendarProps) {
     const today = startOfToday();
-    const initialDate = selectedDate ? new Date(selectedDate) : today;
-    const [currentMonth, setCurrentMonth] = useState(isNaN(initialDate.getTime()) ? today : initialDate);
+    const minSelectableDate = minDate ? new Date(minDate) : today;
+    const initialDate = selectedDate ? new Date(selectedDate) : (minDate ? new Date(minDate) : today);
+
+    // Ensure we start on the correct month if minDate is ahead
+    const startingMonth = isBefore(initialDate, minSelectableDate) ? minSelectableDate : initialDate;
+
+    const [currentMonth, setCurrentMonth] = useState(isNaN(startingMonth.getTime()) ? today : startingMonth);
     const selected = selectedDate ? new Date(selectedDate) : null;
 
     const renderHeader = () => {
@@ -22,7 +28,8 @@ export default function PremiumCalendar({ selectedDate, onSelect, onClose }: Pre
             <div className="flex items-center justify-between px-6 py-4 border-b border-foreground/5">
                 <button
                     onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
-                    className="p-2 hover:bg-foreground/5 rounded-full transition-colors"
+                    disabled={isBefore(subMonths(currentMonth, 1), startOfMonth(minSelectableDate))}
+                    className={`p-2 rounded-full transition-colors ${isBefore(subMonths(currentMonth, 1), startOfMonth(minSelectableDate)) ? "opacity-30 cursor-not-allowed" : "hover:bg-foreground/5"}`}
                 >
                     <ChevronLeft className="w-5 h-5 text-dark-cyan-light" />
                 </button>
@@ -69,14 +76,16 @@ export default function PremiumCalendar({ selectedDate, onSelect, onClose }: Pre
                 const cloneDay = day;
                 const isSelected = selected && isSameDay(day, selected);
                 const isCurrentMonth = isSameMonth(day, monthStart);
-                const isPast = isBefore(day, today);
+
+                // Disable dates before minSelectableDate (which defaults to today or provided minDate)
+                const isDisabled = isBefore(day, minSelectableDate);
 
                 days.push(
                     <div
                         key={day.toString()}
-                        className={`relative aspect-square flex items-center justify-center p-1 ${!isCurrentMonth ? "opacity-20" : ""} ${isPast ? "cursor-not-allowed opacity-20" : "cursor-pointer"}`}
+                        className={`relative aspect-square flex items-center justify-center p-1 ${!isCurrentMonth ? "opacity-20" : ""} ${isDisabled ? "cursor-not-allowed opacity-20" : "cursor-pointer"}`}
                         onClick={() => {
-                            if (!isPast) {
+                            if (!isDisabled) {
                                 onSelect(format(cloneDay, "yyyy-MM-dd"));
                                 onClose();
                             }
@@ -89,7 +98,7 @@ export default function PremiumCalendar({ selectedDate, onSelect, onClose }: Pre
                                 transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                             />
                         )}
-                        <span className={`relative text-xs font-bold transition-colors ${isSelected ? "text-white" : "text-foreground group-hover:text-dark-cyan-light"}`}>
+                        <span className={`relative text-xs font-bold transition-colors ${isSelected ? "text-white" : "text-foreground group-hover:text-dark-cyan-light"} ${isDisabled ? "text-foreground/40" : ""}`}>
                             {formattedDate}
                         </span>
                         {isSameDay(day, today) && !isSelected && (
@@ -122,11 +131,14 @@ export default function PremiumCalendar({ selectedDate, onSelect, onClose }: Pre
             {renderCells()}
             <div className="px-6 py-4 bg-foreground/5 flex items-center justify-between">
                 <button
+                    disabled={isBefore(today, minSelectableDate)}
                     onClick={() => {
-                        onSelect(format(today, "yyyy-MM-dd"));
-                        onClose();
+                        if (!isBefore(today, minSelectableDate)) {
+                            onSelect(format(today, "yyyy-MM-dd"));
+                            onClose();
+                        }
                     }}
-                    className="text-[10px] font-black uppercase tracking-widest text-dark-cyan-light hover:underline"
+                    className={`text-[10px] font-black uppercase tracking-widest ${isBefore(today, minSelectableDate) ? "text-silver cursor-not-allowed opacity-50" : "text-dark-cyan-light hover:underline"}`}
                 >
                     Today
                 </button>

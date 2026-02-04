@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Plane } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { HERO_CONTENT } from "@/constants/landingData";
+import Logo from "@/components/ui/Logo";
 
 export default function Hero() {
     const { scrollY } = useScroll();
@@ -41,26 +42,14 @@ export default function Hero() {
                     className="relative w-full max-w-[1600px] flex flex-col items-center gap-6 md:gap-8"
                 >
                     <div className="relative inline-block">
-                        {/* Animated Plane SVG - Decoupled from centering */}
                         <motion.div
                             layoutId="nav-logo-icon"
                             initial={{ x: -20, opacity: 0 }}
                             animate={{ x: 0, opacity: 1 }}
                             transition={{ duration: 1.2, delay: 0.2, ease: "circOut" }}
-                            className="hidden xl:block absolute -left-48 top-1/2 -translate-y-1/2 w-40 h-40"
+                            className="absolute -top-20 left-1/2 -translate-x-1/2 w-20 h-20 md:hidden xl:block xl:w-40 xl:h-40 xl:-left-48 xl:top-1/2 xl:-translate-y-1/2 xl:translate-x-0"
                         >
-                            <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto drop-shadow-2xl">
-                                <path d="M98.5 160L100 190L101.5 160Z" fill="black" fillOpacity="0.2" className="blur-sm" />
-                                <path d="M100 20C95 20 90 25 90 40V140C90 155 95 160 100 160C105 160 110 155 110 140V40C110 25 105 20 100 20Z" fill="currentColor" className="text-foreground" />
-                                <path d="M100 60L20 100V120L100 90L180 120V100L100 60Z" fill="currentColor" className="text-foreground/90" />
-                                <path d="M100 140L70 160V170L100 155L130 170V160L100 140Z" fill="currentColor" className="text-foreground/90" />
-                                <path d="M96 35H104V40H96V35Z" fill="#38bdf8" />
-                                <circle cx="20" cy="110" r="4" fill="#ef4444" className="opacity-0 dark:opacity-100 animate-[flicker_2s_infinite]" />
-                                <circle cx="20" cy="110" r="8" fill="#ef4444" className="opacity-0 dark:opacity-30 animate-[flicker_2s_infinite_0.1s] blur-md" />
-                                <circle cx="180" cy="110" r="4" fill="#10b981" className="opacity-0 dark:opacity-100 animate-[flicker_2.5s_infinite_0.5s]" />
-                                <circle cx="180" cy="110" r="8" fill="#10b981" className="opacity-0 dark:opacity-30 animate-[flicker_2.5s_infinite_0.6s] blur-md" />
-                                <circle cx="100" cy="170" r="3" fill="white" className="opacity-0 dark:opacity-100 animate-[pulse_1s_infinite]" />
-                            </svg>
+                            <Logo className="w-full h-full drop-shadow-2xl" />
                         </motion.div>
 
                         <motion.h1

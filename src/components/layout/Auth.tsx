@@ -38,9 +38,9 @@ export default function Auth() {
 
     if (user) {
         return (
-            <div className="flex items-center gap-3 bg-foreground/5 backdrop-blur-md border border-foreground/10 px-4 py-2 rounded-full shadow-sm transition-all hover:bg-foreground/10">
+            <div className="flex items-center gap-3 bg-foreground/5 backdrop-blur-md border border-foreground/10 px-4 py-2 rounded-2xl shadow-sm transition-all hover:bg-foreground/10">
                 {user.photoURL ? (
-                    <div className="relative w-8 h-8 rounded-full overflow-hidden border border-foreground/10">
+                    <div className="relative w-8 h-8 rounded-xl overflow-hidden border border-foreground/10">
                         <Image
                             src={user.photoURL}
                             alt={user.displayName || "User"}
@@ -50,7 +50,7 @@ export default function Auth() {
                         />
                     </div>
                 ) : (
-                    <div className="w-8 h-8 rounded-full bg-dark-cyan flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-xl bg-dark-cyan flex items-center justify-center">
                         <UserIcon className="w-4 h-4 text-white" />
                     </div>
                 )}
@@ -64,7 +64,7 @@ export default function Auth() {
                 </div>
                 <button
                     onClick={handleSignOut}
-                    className="p-2 hover:bg-red-500/10 rounded-full transition-colors group ml-2"
+                    className="p-2 hover:bg-red-500/10 rounded-xl transition-colors group ml-2"
                     title="Sign Out"
                 >
                     <LogOut className="w-4 h-4 text-foreground/40 group-hover:text-red-500 transition-colors" />
@@ -76,7 +76,7 @@ export default function Auth() {
     return (
         <button
             onClick={handleSignIn}
-            className="flex items-center gap-2 px-6 py-2 bg-dark-cyan hover:bg-dark-cyan-light text-white rounded-full transition-all font-semibold text-sm shadow-md shadow-dark-cyan/20 font-sans"
+            className="flex items-center gap-2 px-6 py-2 bg-dark-cyan hover:bg-dark-cyan-light text-white rounded-xl transition-all font-semibold text-sm shadow-md shadow-dark-cyan/20 font-sans"
         >
             <UserIcon className="w-4 h-4" />
             <span className="hidden sm:inline">Sign In</span>

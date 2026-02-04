@@ -7,15 +7,15 @@ import { useFlightStore } from "@/lib/store";
 export default function Footer() {
     return (
         <footer className="relative mt-0 border-t border-slate-200 dark:border-white/5 py-fluid bg-white/30 dark:bg-black/20 backdrop-blur-md">
-            <div className="max-w-7xl mx-auto px-fluid grid grid-cols-1 md:grid-cols-12 gap-fluid">
+            <div className="max-w-7xl mx-auto px-fluid grid grid-cols-2 md:grid-cols-12 gap-8 md:gap-fluid">
 
-                {/* Brand Section */}
-                <div className="md:col-span-4">
+                {/* Brand Section - Full width on mobile */}
+                <div className="col-span-2 md:col-span-4">
                     <div className="flex items-center gap-3 mb-6">
                         <div className="w-10 h-10 bg-dark-cyan rounded-xl flex items-center justify-center shadow-lg shadow-dark-cyan/20">
                             <Plane className="w-5 h-5 text-white rotate-45" />
                         </div>
-                        <span className="text-2xl font-display font-black tracking-tighter text-foreground">
+                        <span className="text-xl md:text-2xl font-display font-black tracking-tighter text-foreground">
                             Flight <span className="text-dark-cyan-light">Spotter</span>
                         </span>
                     </div>
@@ -25,7 +25,7 @@ export default function Footer() {
                 </div>
 
                 {/* Platform Links */}
-                <div className="md:col-span-2 flex flex-col items-center md:items-start">
+                <div className="col-span-1 md:col-span-2 flex flex-col items-start">
                     <h5 className="text-[10px] font-black uppercase tracking-widest text-foreground/30 mb-6 uppercase">Navigation</h5>
                     <ul className="space-y-4">
                         <li>
@@ -38,7 +38,7 @@ export default function Footer() {
                 </div>
 
                 {/* Company Links */}
-                <div className="md:col-span-2 flex flex-col items-center md:items-start">
+                <div className="col-span-1 md:col-span-2 flex flex-col items-start">
                     <h5 className="text-[10px] font-black uppercase tracking-widest text-foreground/30 mb-6 uppercase">Legal</h5>
                     <ul className="space-y-4">
                         <li>
@@ -50,11 +50,11 @@ export default function Footer() {
                     </ul>
                 </div>
 
-                {/* Support Links */}
-                <div className="md:col-span-2 flex flex-col items-center md:items-start" />
+                {/* Spacer (Hidden on mobile) */}
+                <div className="hidden md:block md:col-span-2" />
 
-                {/* Contact Section */}
-                <div className="md:col-span-2">
+                {/* Contact Section - Full width on mobile */}
+                <div className="col-span-2 md:col-span-2">
                     <h5 className="text-[10px] font-black uppercase tracking-widest text-foreground/30 mb-6 font-dynamic">Contact</h5>
                     <div className="space-y-4">
                         <div className="flex items-center gap-3">

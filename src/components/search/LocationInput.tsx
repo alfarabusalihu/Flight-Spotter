@@ -82,7 +82,7 @@ export default function LocationInput({
                                 {isLoading ? (
                                     <>
                                         <Loader2 className="w-4 h-4 animate-spin text-dark-cyan-light" />
-                                        <span>Finding locations...</span>
+                                        <span>Searching global database...</span>
                                     </>
                                 ) : (
                                     <span>Type a city or airport...</span>
@@ -101,7 +101,7 @@ export default function LocationInput({
                                     <div className="flex-1 min-w-0">
                                         <div className="font-bold text-sm truncate">{formatName(loc.name)}</div>
                                         <div className="text-[10px] text-foreground/40 uppercase font-black truncate">
-                                            {loc.address?.cityName || loc.cityName}, {loc.address?.countryCode || loc.countryCode} • {loc.subType}
+                                            {formatName(loc.address?.cityName || loc.cityName || "")}, {loc.address?.countryCode || loc.countryCode} • {loc.subType}
                                         </div>
                                     </div>
                                 </div>

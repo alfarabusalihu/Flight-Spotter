@@ -26,7 +26,7 @@ export default function ThemeToggle() {
     return (
         <button
             onClick={toggleTheme}
-            className="p-2 rounded-full bg-foreground/10 hover:bg-foreground/20 transition-colors backdrop-blur-md border border-foreground/10"
+            className="p-2 rounded-xl bg-foreground/10 hover:bg-foreground/20 transition-colors backdrop-blur-md border border-foreground/10"
             aria-label="Toggle Theme"
         >
             <motion.div

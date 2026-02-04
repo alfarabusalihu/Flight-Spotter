@@ -63,45 +63,41 @@ export default function FlightCard({ flight, index, isInspiration }: FlightCardP
         >
             {/* Main Card Content */}
             <div
-                className="p-6 flex flex-col md:flex-row items-center gap-4 md:gap-8 cursor-pointer"
+                className="relative p-4 md:p-6 grid grid-cols-[auto_1fr] md:flex md:flex-row items-start md:items-center gap-4 md:gap-8 cursor-pointer"
                 onClick={() => setIsExpanded(!isExpanded)}
             >
-                {/* Airline Branding */}
-                <div className="flex flex-col items-center gap-2 shrink-0 md:min-w-[84px] w-full md:w-auto">
-                    <div className="w-14 h-14 bg-white/50 dark:bg-white/5 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm overflow-hidden border border-silver/10">
+                {/* Airline Branding - Compact on Mobile */}
+                <div className="col-span-1 md:w-auto">
+                    <div className="w-10 h-10 md:w-14 md:h-14 bg-white/50 dark:bg-white/5 rounded-2xl flex items-center justify-center shadow-sm overflow-hidden border border-silver/10">
                         {airlineCode !== "Discovery" ? (
-                            <div className="relative w-10 h-10">
+                            <div className="relative w-8 h-8 md:w-10 md:h-10">
                                 <Image
                                     src={`https://www.gstatic.com/flights/airline_logos/70px/${airlineCode}.png`}
                                     alt={airlineName}
                                     width={40}
                                     height={40}
                                     className="object-contain brightness-110 contrast-125"
-                                    unoptimized // External branding logos don't always need optimization
+                                    unoptimized
                                 />
                             </div>
                         ) : (
-                            <span className="text-2xl">🌍</span>
+                            <span className="text-xl md:text-2xl">🌍</span>
                         )}
                     </div>
                 </div>
 
-                {/* Time & Duration */}
-                <div className="flex-1 w-full grid grid-cols-2 md:grid-cols-3 gap-4 items-center">
+                {/* Time & Duration - Right of Logo on Mobile */}
+                <div className="col-span-1 md:flex-1 grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-4 items-center">
                     <div className="flex flex-col">
-                        <div className="flex items-center gap-2 mb-1">
-                            <span className="px-2 py-0.5 rounded-md bg-dark-cyan/10 text-[10px] font-black text-dark-cyan uppercase tracking-widest">{airlineName}</span>
+                        <div className="flex items-center gap-2 mb-0.5">
+                            <span className="px-1.5 py-0.5 rounded-md bg-dark-cyan/10 text-[9px] font-black text-dark-cyan uppercase tracking-widest truncate max-w-[120px]">{airlineName}</span>
                         </div>
-                        <span className="text-xl font-black text-foreground font-sans tracking-tighter">
+                        <span className="text-base md:text-xl font-black text-foreground font-sans tracking-tighter">
                             {isSearchRes ? `${depTime} – ${arrTime}` : `To ${destinationName}`}
                         </span>
-                        <div className="flex items-center gap-3 mt-1 underline-offset-4 decoration-dark-cyan-light/30">
-                            <span className="md:hidden text-[10px] font-black text-amber-500 uppercase tracking-widest">
-                                • {stopsLabel}
-                            </span>
-                        </div>
                     </div>
 
+                    {/* Desktop Duration Visualizer */}
                     <div className="hidden md:flex flex-col items-center gap-1">
                         <span className="text-[10px] font-black text-dark-cyan/40 uppercase tracking-[0.2em]">{duration}</span>
                         <div className="w-24 h-[3px] bg-silver/10 relative rounded-full overflow-hidden">
@@ -121,35 +117,36 @@ export default function FlightCard({ flight, index, isInspiration }: FlightCardP
                     </div>
 
                     <div className="flex flex-col md:items-end gap-1">
-                        {isSearchRes && (
-                            <div className="flex flex-col items-end gap-0.5">
-                                {stopsCount > 0 && flight.itineraries?.[0]?.segments?.[0]?.arrival?.iataCode && (
-                                    <span className="text-[9px] font-bold text-foreground/40 uppercase tracking-tight">
-                                        {stopsCount === 1 ? `Layover in ${getCityName(flight.itineraries[0].segments[0].arrival.iataCode)}` : "Multiple stops"}
-                                    </span>
-                                )}
-                                {flight.itineraries?.[0]?.segments?.[0]?.aircraft?.code && (
-                                    <span className="text-[9px] font-bold text-foreground/30 uppercase tracking-tight">
-                                        Jet: {flight.itineraries[0].segments[0].aircraft.code}
-                                    </span>
-                                )}
-                            </div>
-                        )}
+                        {/* Mobile Duration/Stop Info - Compact */}
+                        <div className="md:hidden flex items-center gap-2 text-[10px] font-bold text-foreground/40">
+                            <span>{duration}</span>
+                            <span>•</span>
+                            <span className={stopsCount === 0 ? "text-emerald-500" : "text-amber-500"}>
+                                {stopsCount === 0 ? "Direct" : `${stopsCount} Stop`}
+                            </span>
+                        </div>
                     </div>
                 </div>
 
-                {/* Price & Action */}
-                <div className="flex items-center justify-between w-full md:w-auto gap-6 shrink-0">
-                    <div className="text-right">
-                        <span className="text-2xl font-display font-bold text-foreground font-sans">
-                            {formatPrice(price)}
-                        </span>
-                    </div>
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all shadow-sm ${isExpanded
-                        ? 'bg-dark-cyan text-white rotate-180'
-                        : 'bg-silver/10 group-hover:bg-dark-cyan-light group-hover:text-white'
-                        }`}>
-                        <ChevronDown className="w-6 h-6" />
+                {/* Price & Action - Inline on Mobile (Floating Group) */}
+                <div className="absolute top-1/2 -translate-y-1/2 right-3 md:relative md:top-auto md:right-auto md:transform-none md:col-span-1 md:w-auto">
+                    <div className="flex items-center bg-background/80 backdrop-blur-md md:bg-transparent rounded-full md:rounded-none border border-foreground/5 md:border-none shadow-sm md:shadow-none p-1 md:p-0 md:gap-6">
+                        {/* Price */}
+                        <div className="px-3 md:px-0 border-r md:border-none border-foreground/10 md:border-transparent">
+                            <span className="text-sm md:text-2xl font-display font-bold text-foreground font-sans">
+                                {formatPrice(price)}
+                            </span>
+                        </div>
+
+                        {/* Chevron */}
+                        <div className="pl-1 md:pl-0">
+                            <div className={`w-7 h-7 md:w-10 md:h-10 rounded-full flex items-center justify-center transition-all ${isExpanded
+                                ? 'bg-dark-cyan text-white rotate-180'
+                                : 'bg-transparent md:bg-silver/10 group-hover:bg-dark-cyan-light group-hover:text-white'
+                                }`}>
+                                <ChevronDown className="w-4 h-4 md:w-6 md:h-6" />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -169,6 +166,21 @@ export default function FlightCard({ flight, index, isInspiration }: FlightCardP
                                 <h4 className="font-bold text-dark-cyan uppercase tracking-widest flex items-center gap-2">
                                     <PlaneTakeoff className="w-3 h-3" /> Itinerary
                                 </h4>
+
+                                {/* Mobile Summary Header (Shown only on Mobile) */}
+                                <div className="md:hidden flex flex-col gap-2 p-3 bg-foreground/5 rounded-xl border border-foreground/5 mb-2">
+                                    <div className="flex items-center justify-between">
+                                        <span className="font-black text-foreground uppercase tracking-wider">{airlineName}</span>
+                                        <span className="text-foreground/50">{duration}</span>
+                                    </div>
+                                    <div className="flex items-center gap-2 text-[10px] font-bold">
+                                        <span className={stopsCount === 0 ? "text-emerald-500" : "text-amber-500"}>{stopsLabel}</span>
+                                        {stopsCount > 0 && flight.itineraries?.[0]?.segments?.[0]?.arrival?.iataCode && (
+                                            <span className="text-foreground/40">• Layover in {getCityName(flight.itineraries[0].segments[0].arrival.iataCode)}</span>
+                                        )}
+                                    </div>
+                                </div>
+
                                 <div className="space-y-4">
                                     {flight.itineraries?.[0]?.segments?.map((seg: any, i: number) => (
                                         <div key={i} className="relative pl-6 border-l-2 border-foreground/10 space-y-1">
