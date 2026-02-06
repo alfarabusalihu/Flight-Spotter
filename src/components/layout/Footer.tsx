@@ -1,7 +1,7 @@
 "use client";
 
 import { FOOTER_LINKS, Plane } from "@/constants/landingData";
-import { Mail, MapPin, Phone, Globe, Coins } from "lucide-react";
+import { Mail, MapPin, Phone, Globe, Coins, Instagram, Linkedin } from "lucide-react";
 import { useFlightStore } from "@/lib/store";
 
 export default function Footer() {
@@ -37,40 +37,31 @@ export default function Footer() {
                     </ul>
                 </div>
 
-                {/* Company Links */}
-                <div className="col-span-1 md:col-span-2 flex flex-col items-start">
-                    <h5 className="text-[10px] font-black uppercase tracking-widest text-foreground/30 mb-6 uppercase">Legal</h5>
-                    <ul className="space-y-4">
-                        <li>
-                            <a href="/privacy" className="text-sm font-bold text-foreground/60 hover:text-dark-cyan-light transition-colors">Privacy Policy</a>
-                        </li>
-                        <li>
-                            <a href="/terms" className="text-sm font-bold text-foreground/60 hover:text-dark-cyan-light transition-colors">Terms of Service</a>
-                        </li>
-                    </ul>
-                </div>
-
                 {/* Spacer (Hidden on mobile) */}
-                <div className="hidden md:block md:col-span-2" />
+                <div className="hidden md:block md:col-span-4" />
 
-                {/* Contact Section - Full width on mobile */}
-                <div className="col-span-2 md:col-span-2">
-                    <h5 className="text-[10px] font-black uppercase tracking-widest text-foreground/30 mb-6 font-dynamic">Contact</h5>
-                    <div className="space-y-4">
-                        <div className="flex items-center gap-3">
-                            <Mail className="w-4 h-4 text-dark-cyan-light shrink-0" />
-                            <a href="mailto:hello@flightspotter.com" className="text-xs font-bold text-foreground hover:underline">hello@flightspotter.com</a>
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <Phone className="w-4 h-4 text-dark-cyan-light shrink-0" />
-                            <span className="text-xs font-bold text-foreground">+1 (888) SKY-LINE</span>
-                        </div>
+                {/* Contact Section - Compact & Interactive - Right Aligned */}
+                <div className="col-span-1 md:col-span-2 flex flex-col items-end">
+                    <h5 className="text-[10px] font-black uppercase tracking-widest text-foreground/30 mb-6 font-dynamic text-right">Contact</h5>
+                    <div className="flex items-center gap-4 justify-end">
+                        <a href="mailto:flightspotter2000@gmail.com" className="group p-2 rounded-full hover:bg-dark-cyan/5 transition-colors" title="Email Us">
+                            <Mail className="w-5 h-5 text-dark-cyan-light group-hover:scale-110 transition-transform" />
+                        </a>
+                        <a href="#" className="group p-2 rounded-full hover:bg-dark-cyan/5 transition-colors" title="Call Us" onClick={(e) => { e.preventDefault(); alert(`Call us at: +1 (888) ${Math.floor(100 + Math.random() * 900)}-${Math.floor(1000 + Math.random() * 9000)}`); }}>
+                            <Phone className="w-5 h-5 text-dark-cyan-light group-hover:scale-110 transition-transform" />
+                        </a>
+                        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="group p-2 rounded-full hover:bg-dark-cyan/5 transition-colors" title="Instagram">
+                            <Instagram className="w-5 h-5 text-dark-cyan-light group-hover:scale-110 transition-transform" />
+                        </a>
+                        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="group p-2 rounded-full hover:bg-dark-cyan/5 transition-colors" title="LinkedIn">
+                            <Linkedin className="w-5 h-5 text-dark-cyan-light group-hover:scale-110 transition-transform" />
+                        </a>
                     </div>
                 </div>
 
             </div>
 
-            <div className="max-w-7xl mx-auto px-fluid mt-20 pt-8 border-t border-slate-200 dark:border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="max-w-7xl mx-auto px-fluid mt-10 pt-4 border-t border-slate-200 dark:border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
                 <div className="flex flex-col items-center md:items-start gap-2">
                     <p className="text-[10px] font-bold text-foreground/20 uppercase tracking-widest">
                         © 2026 Flight Spotter Aero Intelligence. All Rights Reserved.

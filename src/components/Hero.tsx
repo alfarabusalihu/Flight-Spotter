@@ -3,6 +3,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Plane } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { HERO_CONTENT } from "@/constants/landingData";
 import Logo from "@/components/ui/Logo";
 
@@ -13,8 +14,20 @@ export default function Hero() {
     const router = useRouter();
     const { title, subtitle, description, buttonLabel } = HERO_CONTENT;
 
+    const [isExiting, setIsExiting] = useState(false);
+
     const handleSearchClick = () => {
-        router.push('/flights');
+        setIsExiting(true);
+        // Wait for animation to complete before routing
+        setTimeout(() => {
+            router.push('/flights');
+        }, 800);
+    };
+
+    const contentVariants = {
+        hidden: { y: -100, opacity: 0, filter: "blur(10px)" },
+        visible: { y: 0, opacity: 1, filter: "blur(0px)" },
+        exit: { y: -150, opacity: 0, filter: "blur(20px)" }
     };
 
     return (
@@ -26,6 +39,8 @@ export default function Hero() {
             {/* Radiant Background Layer */}
             <motion.div
                 style={{ scale }}
+                animate={isExiting ? { scale: 1.1, opacity: 0 } : { scale: 1, opacity: 1 }}
+                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
                 className="absolute inset-0 z-0 bg-background"
             >
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,var(--color-dark-cyan-light)_0%,transparent_70%)] opacity-20 dark:opacity-30" />
@@ -36,14 +51,14 @@ export default function Hero() {
             {/* Branding Content */}
             <div className="relative z-20 flex flex-col items-center justify-center h-full px-4 text-center gap-8 md:gap-12">
                 <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                    initial="hidden"
+                    animate={isExiting ? "exit" : "visible"}
+                    variants={contentVariants}
+                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                     className="relative w-full max-w-[1600px] flex flex-col items-center gap-6 md:gap-8"
                 >
                     <div className="relative inline-block">
                         <motion.div
-                            layoutId="nav-logo-icon"
                             initial={{ x: -20, opacity: 0 }}
                             animate={{ x: 0, opacity: 1 }}
                             transition={{ duration: 1.2, delay: 0.2, ease: "circOut" }}
@@ -53,7 +68,6 @@ export default function Hero() {
                         </motion.div>
 
                         <motion.h1
-                            layoutId="nav-logo-text"
                             className="text-6xl md:text-[10rem] font-display font-black tracking-tighter text-foreground leading-[0.85] text-center"
                         >
                             {title}<br />
@@ -70,8 +84,8 @@ export default function Hero() {
                 <motion.button
                     layoutId="hero-search-button"
                     initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                    animate={isExiting ? { opacity: 0, y: 50, filter: "blur(10px)" } : { opacity: 1, y: 0, filter: "blur(0px)" }}
+                    transition={{ duration: 0.6, ease: "easeInOut" }}
                     onClick={handleSearchClick}
                     className="group relative px-12 py-5 bg-dark-cyan hover:bg-dark-cyan-light text-white font-bold rounded-2xl shadow-2xl shadow-dark-cyan/30 hover:shadow-dark-cyan-light/40 transition-all duration-300 hover:scale-105 flex items-center gap-3 text-lg"
                 >

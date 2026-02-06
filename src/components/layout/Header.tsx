@@ -43,13 +43,11 @@ export default function Header({ onLogoClick }: HeaderProps) {
                     className="flex items-center gap-3 group cursor-pointer"
                 >
                     <motion.div
-                        layoutId="nav-logo-icon"
                         className="w-10 h-10 bg-gradient-to-br from-dark-cyan to-dark-cyan-light rounded-2xl flex items-center justify-center shadow-lg shadow-dark-cyan/20 group-hover:scale-110 transition-transform overflow-hidden"
                     >
                         <Plane className="w-5 h-5 text-white rotate-45" />
                     </motion.div>
                     <motion.span
-                        layoutId="nav-logo-text"
                         className="text-lg md:text-xl font-display font-black text-foreground tracking-tighter group-hover:text-dark-cyan-light transition-colors"
                     >
                         Flight Spotter

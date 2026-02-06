@@ -21,7 +21,7 @@
   /* A very light cyan (Teal-50) */
   --foreground: #020617;
   /* Slate-950 for high contrast black */
-  --font-main: var(--font-inter), sans-serif;
+  --font-main: var(--font-outfit), sans-serif;
   --font-heading: var(--font-outfit), sans-serif;
   --accent: #0d9488;
 
@@ -50,7 +50,7 @@
   /* Teal-950 equivalent for deep cyan dark mode */
   --foreground: #ffffff;
   /* Pure white for max contrast */
-  --font-main: var(--font-inter), sans-serif;
+  --font-main: var(--font-outfit), sans-serif;
   --font-heading: var(--font-outfit), sans-serif;
   --accent: #2dd4bf;
 
